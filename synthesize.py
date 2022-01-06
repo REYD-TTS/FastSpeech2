@@ -84,6 +84,37 @@ def preprocess_mandarin(text, preprocess_config):
     return np.array(sequence)
 
 
+def preprocess_yiddish(text, preprocess_config):
+    lexicon = read_lexicon(preprocess_config["path"]["lexicon_path"])
+
+    phones = []
+    words = re.split(r"([,;.„“”\"\-\?\!\(\)\s+])", text)
+    for w in words:
+        if w in lexicon:
+            phones += lexicon[w]
+        else:
+            w = re.sub(r"[־'א]", "", w)
+            w = w.replace("ך", "כ")
+            w = w.replace("ם", "מ")
+            w = w.replace("ן", "נ")
+            w = w.replace("ף", "פֿ")
+            w = w.replace("ץ", "צ")
+            phones += [c for c in w]
+
+    phones = "{" + "}{".join(phones) + "}"
+    phones = re.sub(r"\{[^\w\sאאַאָבבֿגדהווּװױזחטייִײײַכּכךלמםנןסעפּפֿףצץקרששׂתּת]\}", "{sp}", phones)
+    phones = phones.replace("}{", " ")
+    print("Raw Text Sequence: {}".format(text))
+    print("Phoneme Sequence: {}".format(phones))
+    sequence = np.array(
+        text_to_sequence(
+            phones, preprocess_config["preprocessing"]["text"]["text_cleaners"]
+        )
+    )
+
+    return np.array(sequence)
+
+
 def synthesize(model, step, configs, vocoder, batchs, control_values):
     preprocess_config, model_config, train_config = configs
     pitch_control, energy_control, duration_control = control_values
@@ -206,6 +237,8 @@ if __name__ == "__main__":
             texts = np.array([preprocess_english(args.text, preprocess_config)])
         elif preprocess_config["preprocessing"]["text"]["language"] == "zh":
             texts = np.array([preprocess_mandarin(args.text, preprocess_config)])
+        elif preprocess_config["preprocessing"]["text"]["language"] == "yi":
+            texts = np.array([preprocess_yiddish(args.text, preprocess_config)])
         text_lens = np.array([len(texts[0])])
         batchs = [(ids, raw_texts, speakers, texts, text_lens, max(text_lens))]
 

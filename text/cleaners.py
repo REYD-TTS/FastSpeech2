@@ -87,3 +87,10 @@ def english_cleaners(text):
     text = expand_abbreviations(text)
     text = collapse_whitespace(text)
     return text
+    
+def yiddish_cleaners(text):
+    '''Pipeline for pointed Yiddish text.'''
+    #text = normalise_unicode(text)
+    #TODO: respell lk
+    text = collapse_whitespace(text)
+    return text
