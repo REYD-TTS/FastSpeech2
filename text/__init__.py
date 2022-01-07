@@ -33,15 +33,8 @@ def text_to_sequence(text, cleaner_names):
         m = _curly_re.match(text)
 
         if not m:
-            print("no match")
-            print(text)
             sequence += _symbols_to_sequence(_clean_text(text, cleaner_names).split())
             break
-        #print(f"1: {m.group(1)}")
-        print(f"before: {m.group(2).split()}")
-        #print(f"3: {m.group(3)}")
-        #sequence += _symbols_to_sequence(_clean_text(m.group(1), cleaner_names).split())
-        print(f"after: {_symbols_to_sequence(m.group(2).split())}")
         sequence += _symbols_to_sequence(m.group(2).split())
 
         text = m.group(3)
