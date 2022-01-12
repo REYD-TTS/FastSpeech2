@@ -93,12 +93,16 @@ def preprocess_yiddish(text, preprocess_config):
         if w in lexicon:
             phones += lexicon[w]
         else:
-            w = re.sub(r"[־'א]", "", w)
+            w = re.sub(r"[־']", "", w)
             w = w.replace("ך", "כ")
             w = w.replace("ם", "מ")
             w = w.replace("ן", "נ")
-            w = w.replace("ף", "פֿ")
             w = w.replace("ץ", "צ")
+
+            if 'yivo_respelled' in preprocess_config["path"]["lexicon_path"]:
+              w = w.replace("א", "")
+            if 'yivo' in preprocess_config["path"]["lexicon_path"]:
+              w = w.replace("ף", "פֿ")
             phones += [c for c in w]
 
     phones = "{" + "}{".join(phones) + "}"
