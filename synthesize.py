@@ -106,7 +106,7 @@ def preprocess_yiddish(text, preprocess_config):
             phones += [c for c in w]
 
     phones = "{" + "}{".join(phones) + "}"
-    phones = re.sub(r"\{[^\w\sאאַאָבבֿגדהווּװױזחטייִײײַכּכךלמםנןסעפּפֿףצץקרששׂתּת]\}", "{sp}", phones)
+    phones = re.sub(r"\{[^\w\sאאַאָבבֿגדהווּװױזחטייִײײַכּכךלמםנןסעפפּפֿףצץקרששׂתּת]\}", "{sp}", phones)
     phones = phones.replace("}{", " ")
     print("Raw Text Sequence: {}".format(text))
     print("Phoneme Sequence: {}".format(phones))

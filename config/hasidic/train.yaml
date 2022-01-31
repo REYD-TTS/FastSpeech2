@@ -1,7 +1,7 @@
 path:
-  ckpt_path: "./output/ckpt/hasidified" # change this
-  log_path: "./output/log/hasidified" # change this
-  result_path: "./output/result/hasidified" # change this
+  ckpt_path: "./output/ckpt/hasidic" # change this
+  log_path: "./output/log/hasidic" # change this
+  result_path: "./output/result/hasidic" # change this
 optimizer:
   batch_size: 16
   betas: [0.9, 0.98]

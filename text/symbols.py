@@ -11,7 +11,7 @@ _pad = "_"
 _punctuation = "!'(),.:;? "
 _special = "-"
 #_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-_letters = "אאַאָבבֿגדהווּװױזחטייִײײַכּכךלמםנןסעפּפֿףצץקרששׂתּת־׳״'"
+_letters = "אאַאָבבֿגדהווּװױזחטייִײײַכּכךלמםנןסעפפּפֿףצץקרששׂתּת־׳״'"
 #_silences = ["@sp", "@spn", "@sil"]
 _silences = ["sp", "spn", "sil", "@sp", "@spn", "@sil"]
 

@@ -1,10 +1,10 @@
-dataset: "hasidified" # change this
+dataset: "hasidic" # change this
 
 path:
-  corpus_path: "raw_data/yiddish_corpus_hasidified" # change this
-  lexicon_path: "lexicon/lexicon_hasidified.txt" # change this
-  raw_path: "raw_data/yiddish_corpus_hasidified" # change this
-  preprocessed_path: "preprocessed_data/yiddish_textgrids_hasidified" # change this
+  corpus_path: "raw_data/yiddish_corpus_hasidic" # change this
+  lexicon_path: "lexicon/lexicon_hasidic.txt" # change this
+  raw_path: "raw_data/yiddish_corpus_hasidic" # change this
+  preprocessed_path: "preprocessed_data/yiddish_textgrids_hasidic" # change this
 
 preprocessing:
   val_size: 512
