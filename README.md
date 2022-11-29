@@ -1,3 +1,110 @@
+# FastSpeech 2 For Yiddish TTS
+
+This is a lightly modified fork of an open source PyTorch implementation of FastSpeech 2. This fork contains additional configuration, instructions, etc, to support the Yiddish language. To cite this Yiddish project please use:
+
+```
+@InProceedings{Webber_etal-2022,
+  author    = {Jacob J. Webber and Samuel K. Lo and Isaac L. Bleaman},
+  title     = {{REYD} -- The First {Yiddish} Text-to-Speech Dataset and System},
+  booktitle = {Proceedings of {Interspeech} 2022},
+  year      = {2022},
+  doi       = {10.21437/Interspeech.2022-789}
+}
+```
+
+Full details of the project can be found [here](https://github.com/REYD-TTS).
+
+If you want to generate samples without hassle, there is an interactive demo available [here](https://colab.research.google.com/drive/1xv0I_auaZ9rdNMMyrBpJHvOotH9w_BHa?usp=sharing).
+
+The original README of the FastSpeech 2 implementation is appended below our Yiddish-specific instructions.
+
+## Setup
+
+In order to run training or inference you will need to install the necessary dependencies:
+```
+pip install -r requirements.txt
+```
+Depending on your system you may need to delete the version numbers to get things to install smoothly. You should ensure you have a version of PyTorch with CUDA enabled for training. You will also need the `yiddish` library from Isaac Bleaman:
+
+```
+pip install yiddish
+```
+Download pretrained models and pre-processed dataset:
+
+```
+wget --content-disposition https://figshare.com/ndownloader/articles/19350539/versions/1
+unzip 19350539.zip
+```
+
+## Training (Yiddish)
+
+We provide a pre-processed version of our dataset. This consists of
+- alignment TextGrids generated using the Montreal Forced Aligner. See [here](https://github.com/REYD-TTS/yiddish-tts-texts).
+- FastSpeech2 specific pre-processing steps (generating spectrograms etc.) See preprocessing section below.
+
+Move the relevant files from setup section:
+
+```
+mv yiddish_textgrids*.zip preprocessed_data/
+for orthography in 'yivo_respelled' 'yivo_original' 'hasidic'; do unzip preprocessed_data/yiddish_textgrids_${orthography}.zip; done
+```
+
+There are three different orthographies available. For more information about these see the paper.
+```
+export orthography=yivo_respelled # yivo_original hasidic
+```
+Run the training script:
+
+```
+python train.py -p config/${orthography}/preprocess.yaml -m config/${orthography}/model.yaml -t config/${orthography}/train.yaml
+```
+
+## Synthesis
+
+For synthesis we provide pretrained models, which are downloaded as part of the set-up section.
+
+Move these to the right place as below. If you have trained your own, this will not be needed.
+
+```
+unzip pretrained_models.zip
+for orthography in 'yivo_respelled' 'yivo_original' 'hasidic'
+do
+    mkdir -p output/ckpt/${orthography}
+    mkdir -p output/log/${orthography}
+    mkdir -p output/result/${orthography}
+    mv ${orthography}/100000.pth.tar output/ckpt/${orthography}/
+    rm -rf ${orthography}/
+done
+```
+
+Speaker ids are 0: male, Lithuanian Yiddish, 1: female, Lithuanian Yiddish, 2: male, Polish Yiddish.
+Orthography is as above.
+
+```
+export s_id=0 # 1 2
+export orthography=yivo_respelled # yivo_original hasidic
+```
+
+Set your text input:
+
+```
+export text="מעקט אָפּ דעם טעקסט און שרײַבט אַרײַן אַן אײגענעם"
+```
+
+Preprocess input text (See paper):
+
+```
+text=$(python yiddish_preprocessing.py ${text} -o ${orthography})
+```
+
+Run inference script:
+
+```
+python synthesize.py --text \"{text}\" --speaker_id ${s_id} --restore_step 100000 --mode single -p config/${othography}/preprocess.yaml -m config/${orthography}/model.yaml -t config/${orthography}/train.yaml
+
+ls output/result/${orthography}
+```
+
 # FastSpeech 2 - PyTorch Implementation
 
 This is a PyTorch implementation of Microsoft's text-to-speech system [**FastSpeech 2: Fast and High-Quality End-to-End Text to Speech**](https://arxiv.org/abs/2006.04558v1). 
