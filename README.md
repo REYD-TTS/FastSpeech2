@@ -100,7 +100,7 @@ text=$(python yiddish_preprocessing.py ${text} -o ${orthography})
 Run inference script:
 
 ```
-python synthesize.py --text \"{text}\" --speaker_id ${s_id} --restore_step 100000 --mode single -p config/${othography}/preprocess.yaml -m config/${orthography}/model.yaml -t config/${orthography}/train.yaml
+python synthesize.py --text "${text}" --speaker_id ${s_id} --restore_step 100000 --mode single -p config/${orthography}/preprocess.yaml -m config/${orthography}/model.yaml -t config/${orthography}/train.yaml
 
 ls output/result/${orthography}
 ```
